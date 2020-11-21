@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../static/main.css">
+        <!-- Code Mirror CSS -->    
+        <!-- <link rel="stylesheet" href="../static/codemirror/lib/codemirror.css">
+        <link rel="stylesheet" href="../static/codemirror/theme/darcula.css"> -->
+        <link rel="stylesheet" href="../static/vendor/css/codemirror.css">
+        <link rel="stylesheet" href="../static/vendor/css/darcula.css">
+        <link rel="stylesheet" href="../static/vendor/css/idea.css">
+
+        <title>Json Converter</title>
+    </head>
+    <body>
+        <!-- Nav Bar /* -->
+        <nav class="navbar expand navbar-color-light cl-ligth nav-fix" id="brandA">
+            <!-- Brand -->
+            <div  class="brand"> 
+                <a href="{{url_for('index')}}" >Federico Baú</a>   
+            </div>
+            <!-- TODO -Implement as a Modal pop up window- -->
+            <!-- Contact -->
+            <div class="nav-item">
+            </div>
+        </nav>  
+        <!-- */ -->
+
+        <!-- Header /* -->
+        <header>
+            <div class="head row">
+                <div class="container">
+                    <h1>JSON Data Converter for <i>Python.</i></h1>
+
+                    <!-- Error Alert Flash /* -->
+                    <div class="container-sm ">
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}                        
+                            
+                                {% for category, message in messages %}
+                                    <div class="alert alert-{{category}}">
+                                        <p class="close">{{ message }}</p>
+                                    </div>                                
+                                {% endfor %}
+                        
+                            {% endif %}
+                        {% endwith %}
+                    </div>
+                    <!-- End flash */ -->
+
+                </div>
+            </div>
+        </header>
+        <!-- */ -->
+        
+        
+        <!-- Main /*-->
+        <main>
+            <section class="main-content flex-main">
+                <!-- Page Side Left -->
+                <aside class="content flex-child flex-side left">                         
+                    {% if mode == 'JSON'%}
+                        <button class="btn btn-light" id="modeSwitch" value="JSON"   onclick="switchMode(this)">Switch</button>
+                        {% else %}
+                        <button class="btn btn-light" id="modeSwitch" value="python"   onclick="switchMode(this)">Switch</button>                                    
+                    {% endif %}               
+
+                    <!-- Form Input -->
+                    <form action="/send-data" name="input_data_"  method="POST">
+                        {% if mode == 'JSON'%}
+                        <input style="display: none;" type="hidden" value="JSON" name="user_mode" id="mode&Switch$">
+                        {% else %}
+                        <input style="display: none;" type="hidden" value="python" name="user_mode" id="mode&Switch$">                                   
+                    {% endif %}        
+                        <input style="display: none;" type="hidden" value="JSON" name="user_mode" id="mode&Switch$">
+                        <!-- Submit -->
+                        <input type="submit" class="btn btn-light" value="Convert" name="converter">
+                    
+                    <!-- Theme Mode -->
+                    <h4 class="switch-title">Toogle Theme</h4>                     
+                    <label class="switch">
+                        {% if theme == 'on' %}
+                            <input type="checkbox" onclick="toggleTheme(this)" id="themeToggle" value="on"  name="theme" checked>
+                        {% else %}
+                            
+                            <input type="checkbox" onclick="toggleTheme(this)" id="themeToggle" value="off"  name="theme">
+                        {% endif %}                        
+                        <span class="slider round"></span>
+                    </label>                    
+                </aside>
+                <div class="left-right-separator"></div>
+
+                <!-- Left Window INPUT-->
+                <article class="content flex-child flex-content">
+                    <h2 id="leftTitle" > 
+                        {% if mode == 'JSON'%}
+                            JSON Object
+                        {% else %}
+                            Python Data             
+                        {% endif %}
+                    </h2>
+                              
+                        <!-- Input TextArea -->
+                        <textarea id="inputData" class="leftWindow" name="input" cols="75" rows="25" autocorrect="off" autocapitalize="off" spellcheck="false" wrap="off">                      
+                        </textarea> 
+                    </form>
+                </article>
+                <!-- */ -->
+                
+                <!-- Right Window OUTPUT -->
+                <article class="content flex-child flex-content"> 
+                    <h2 id="rightTitle">
+                        {% if mode == 'JSON'%}
+                            Python Data
+                        {% else %}                                   
+                            JSON Object   
+                        {% endif %}
+                        
+                    </h2>                      
+                        <!-- Output TextArea-->
+                        <textarea name="output" id="outputWin" cols="75" rows="25"
+                        class="rightWindow" autocorrect="off" autocapitalize="off" spellcheck="false" wrap="off">
+{%if session_result and session_result[0] == 'err'%}{{session_result[1:]}}{% elif session_result %}{{ session_result | pprint }}{%endif%}                                                                           
+                        </textarea>                
+                </article>
+                <!-- */ -->
+
+                <!-- Page Side Right -->
+                <aside class="content flex-child flex-side right">        
+                </aside>
+            </section>
+        </main>  
+        <!-- */ -->
+
+        
+        
+        <!-- Footer -->
+        <footer class="footer-">
+            
+            <!-- Flex Box -->
+            <section class="flex-main">            
+                <!-- Page Side Left -->
+                <aside class="content flex-child flex-side left">         
+                </aside>
+                <div class="signature">
+                </div>
+
+                <!-- Signature -->
+                <article class="content flex-child flex-content">
+
+                     
+                    <div class="signature">
+                        <p><a href="https://github.com/Koubae">GitHub</a></p>
+                        <hr>
+                        <!-- Address -->
+                        <address> 
+                            <p>Author: Federico Baú</p> 
+                            <p>Email: <a href="mailto:fredbau91@gmail.com">fredbau91@gmail.com</a></p>
+                        </address>      
+                        <p>&copy; Copyright 2020 </p> 
+                    </div>
+                </article>
+                <!-- */ -->
+               
+
+                <!-- Page Side Right -->
+                <aside class="content flex-child flex-side right">                    
+                </aside>
+            </section>
+            <!-- */ -->
+        </footer>
+        <!-- */ -->       
+    <!-- Code Mirror Scripts -->
+    <script src="../static/vendor/js/codemirror.js"></script>
+    <script src="../static/vendor/js/closetag.js"></script>
+    <script src="../static/vendor/js/python.js"></script>
+    <script src="../static/vendor/js/javascript.js"></script>
+    <script src="../static/main.js"></script>   
+    </body>
+</html>
