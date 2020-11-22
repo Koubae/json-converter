@@ -154,16 +154,6 @@ def get_data():
 
  
 if __name__ == '__main__':
-    print(app.config)
     app.run(port=8000)
 
 
-
-# [1] -- Be able to convert real Dict data to Python. 
-# The issue encountered is that once the data (i.e a Python Dict) is passed Through the Website 
-# To the Flask App, it becomes a String.
-# As solutioin I see 3 different possible option:
-# 1) Process the data in Broser side (JavaScript.)
-# 2) Process the Sring in the Flask App using Python (maybe Serpy?)
-# 3) Send the Data from Browser to Python but so that is easily deserialize to a Dict (using AJAX).
-# 4) User can add a choosen Schema and is stored in the browser or Cached?
